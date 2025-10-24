@@ -29,10 +29,48 @@ andrew_app/
 
 ## 快速開始
 
-### 後端開發
+### 使用 Docker（推薦）
+
+Docker 環境會自動包含所有需要的服務（PHP、MySQL、phpMyAdmin）
 
 ```bash
-# 啟動 PHP 開發伺服器
+# 1. 複製環境變數範例檔案
+cp .env.example .env
+
+# 2. 啟動所有服務（首次啟動會自動建立資料庫）
+docker-compose up -d
+
+# 3. 查看服務狀態
+docker-compose ps
+
+# 4. 查看服務日誌
+docker-compose logs -f web
+
+# 5. 停止所有服務
+docker-compose down
+
+# 6. 停止並刪除所有資料（包含資料庫）
+docker-compose down -v
+```
+
+啟動後可以透過以下網址訪問：
+- **後端服務**: http://localhost:8000
+- **phpMyAdmin**: http://localhost:8080
+
+### 本機開發（不使用 Docker）
+
+如果您不想使用 Docker，可以使用本機的 PHP 和 MySQL：
+
+```bash
+# 1. 確保已安裝 PHP 8.4+ 和 MySQL 8.0+
+
+# 2. 建立資料庫
+mysql -u root -p < server/database/init.sql
+
+# 3. 設定環境變數
+# 編輯 server/src/config/env.php
+
+# 4. 啟動 PHP 開發伺服器
 npm run dev:server
 # 或
 cd server && php -S localhost:8000 -t public

@@ -1,0 +1,71 @@
+services:
+  # PHP + Apache 服務
+  web:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: andrew_app_web
+    ports:
+      - "8000:80"
+    volumes:
+      - ./server:/var/www/html
+    environment:
+      - DOCKER_ENV=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-vcc_app}
+      - DB_USER=${DB_USER:-vcc_user}
+      - DB_PASS=${DB_PASS:-vcc_password}
+      - APP_BASE_URL=${APP_BASE_URL:-http://localhost:8000}
+      - JWT_SECRET=${JWT_SECRET:-change_me_random_secret_key}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - andrew_app_network
+
+  # MySQL 8.0 資料庫
+  mysql:
+    image: mysql:8.0
+    container_name: andrew_app_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root_password}
+      - MYSQL_DATABASE=${DB_NAME:-vcc_app}
+      - MYSQL_USER=${DB_USER:-vcc_user}
+      - MYSQL_PASSWORD=${DB_PASS:-vcc_password}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root_password}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - andrew_app_network
+
+  # phpMyAdmin (資料庫管理介面)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: andrew_app_phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=${DB_USER:-vcc_user}
+      - PMA_PASSWORD=${DB_PASS:-vcc_password}
+    depends_on:
+      - mysql
+    networks:
+      - andrew_app_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  andrew_app_network:
+    driver: bridge
