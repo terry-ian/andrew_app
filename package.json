@@ -5,9 +5,16 @@
   "description": "虛擬信用卡服務系統 - 前後端分離專案",
   "scripts": {
     "dev:server": "cd server && php -S localhost:8000 -t public",
-    "dev:web": "cd web && npm run dev"
+    "dev:web": "cd web && pnpm dev",
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:web\"",
+    "build:web": "cd web && pnpm build",
+    "test:web": "cd web && pnpm test",
+    "lint:web": "cd web && pnpm lint"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }

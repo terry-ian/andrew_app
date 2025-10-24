@@ -62,6 +62,22 @@ services:
     networks:
       - andrew_app_network
 
+  # 前端 React + Vite
+  frontend:
+    image: node:20-alpine
+    container_name: andrew_app_frontend
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    command: sh -c "corepack enable && pnpm install && pnpm dev --host"
+    networks:
+      - andrew_app_network
+
 volumes:
   mysql_data:
     driver: local
