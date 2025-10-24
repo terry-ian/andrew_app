@@ -1,0 +1,13 @@
+{
+  "name": "andrew-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "虛擬信用卡服務系統 - 前後端分離專案",
+  "scripts": {
+    "dev:server": "cd server && php -S localhost:8000 -t public",
+    "dev:web": "cd web && npm run dev"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

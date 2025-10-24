@@ -3,15 +3,15 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-$config = require __DIR__ . '/app/config/env.php';
-require_once __DIR__ . '/app/core/db.php';
-require_once __DIR__ . '/app/core/security.php';
-require_once __DIR__ . '/app/core/auth.php';
+$config = require __DIR__ . '/../src/config/env.php';
+require_once __DIR__ . '/../src/core/db.php';
+require_once __DIR__ . '/../src/core/security.php';
+require_once __DIR__ . '/../src/core/auth.php';
 
-require_once __DIR__ . '/app/controllers/AuthController.php';
-require_once __DIR__ . '/app/controllers/PasswordController.php';
+require_once __DIR__ . '/../src/controllers/AuthController.php';
+require_once __DIR__ . '/../src/controllers/PasswordController.php';
 
-function render($view, $vars = []) { extract($vars); include __DIR__ . '/app/views/' . $view . '.php'; }
+function render($view, $vars = []) { extract($vars); include __DIR__ . '/../src/views/' . $view . '.php'; }
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
