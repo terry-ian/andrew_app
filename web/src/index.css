@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@theme {
+    --color-bg: #0b1020;
+    --color-dark-blue: #1a2247;
+    --color-darker-blue: #202a59;
+    --color-muted: #a5b0d6;
+    --color-accent: #4b6bfb;
+}
+
+@layer utilities {
+    .bg-radial-auth {
+        background: radial-gradient(1000px 600px at 10% -10%, #1a2247, transparent),
+        radial-gradient(800px 500px at 90% 110%, #202a59, transparent),
+        var(--color-bg);
+    }
+
+    .bg-login-form-wrapper {
+        background: linear-gradient(180deg, #121a39, #0f1631);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+    }
+}

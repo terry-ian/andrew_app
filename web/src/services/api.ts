@@ -1,6 +1,7 @@
 import type { ApiResponse } from "@/types"
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
 
 class ApiClient {
   private baseURL: string
@@ -49,7 +50,10 @@ class ApiClient {
     }
   }
 
-  async get<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
+  async get<T>(
+    endpoint: string,
+    options?: RequestInit
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { ...options, method: "GET" })
   }
 
@@ -77,7 +81,10 @@ class ApiClient {
     })
   }
 
-  async delete<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
+  async delete<T>(
+    endpoint: string,
+    options?: RequestInit
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { ...options, method: "DELETE" })
   }
 }
