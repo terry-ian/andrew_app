@@ -3,27 +3,28 @@ import LoginPage from "@/pages/auth/LoginPage"
 import RegisterPage from "@/pages/auth/RegisterPage"
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage"
 import HomePage from "@/pages/dashboard/HomePage"
+import routeConfigs from "@/pages/routes/Routes.ts";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* 認證路由 */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot" element={<ForgotPasswordPage />} />
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* 認證路由 */}
+                <Route path={routeConfigs.LOGIN} element={<LoginPage />} />
+                <Route path={routeConfigs.REGISTER} element={<RegisterPage />} />
+                <Route path="/forgot" element={<ForgotPasswordPage />} />
 
-        {/* 儀表板路由 */}
-        <Route path="/dashboard" element={<HomePage />} />
+                {/* 儀表板路由 */}
+                <Route path={routeConfigs.DASHBOARD} element={<HomePage />} />
 
-        {/* 預設重導向到登入頁 */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+                {/* 預設重導向到登入頁 */}
+                <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* 404 頁面 */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </BrowserRouter>
-  )
+                {/* 404 頁面 */}
+                <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App

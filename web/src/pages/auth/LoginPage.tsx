@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { authService } from "@/services/auth"
+import * as React from "react";
+import routeConfigs from "@/pages/routes/Routes.ts";
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -18,7 +20,7 @@ export default function LoginPage() {
       const response = await authService.login({ email, password })
 
       if (response.success) {
-        navigate("/dashboard")
+        navigate(routeConfigs.DASHBOARD)
       } else {
         setError(response.message || "登入失敗")
       }
