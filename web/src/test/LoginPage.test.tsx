@@ -1,10 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { render, screen, waitFor } from "@testing-library/react"
+import { screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { BrowserRouter } from "react-router-dom"
 import { authService } from "@/services/auth.ts"
-import LoginPage from "@/pages/auth/LoginPage.tsx";
-import { dummyUser } from "@/test/DummyUser.ts";
+import { dummyUser } from "@/test/DummyUser.ts"
+import { renderWithApp } from "@/test/TestUtils.tsx"
 
 // Mock authService
 vi.mock("@/services/auth", () => ({
@@ -12,16 +11,6 @@ vi.mock("@/services/auth", () => ({
         login: vi.fn(),
     },
 }))
-
-// Mock useNavigate
-const mockNavigate = vi.fn()
-vi.mock("react-router-dom", async () => {
-    const actual = await vi.importActual("react-router-dom")
-    return {
-        ...actual,
-        useNavigate: () => mockNavigate,
-    }
-})
 
 describe("LoginPage", () => {
 
@@ -42,11 +31,8 @@ describe("LoginPage", () => {
             }),
         })
 
-        render(
-            <BrowserRouter>
-                <LoginPage />
-            </BrowserRouter>,
-        )
+        // 使用完整的應用程式架構進行渲染，初始路由為 /login
+        renderWithApp({ initialRoute: "/login" })
 
         // Fill in the form
         const emailInput = screen.getByLabelText(/email/i)
@@ -65,9 +51,10 @@ describe("LoginPage", () => {
             })
         })
 
-        // Verify navigation to dashboard
+        // Verify navigation to dashboard - 檢查是否導航到 dashboard 頁面
         await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledWith("/dashboard")
+            // 當導航成功時，URL 應該變更為 /dashboard
+            expect(window.location.pathname).toBe("/dashboard")
         })
     })
 })
