@@ -11,7 +11,6 @@ export interface User {
 export interface LoginRequest {
   email: string
   password: string
-  csrf: string
 }
 
 // 登入回應
@@ -26,7 +25,6 @@ export interface RegisterRequest {
   full_name: string
   email: string
   password: string
-  csrf: string
 }
 
 // API 回應通用格式

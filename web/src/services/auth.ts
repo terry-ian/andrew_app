@@ -8,7 +8,7 @@ import type {
 
 export const authService = {
   // 登入
-  async login(credentials: Omit<LoginRequest, "csrf">): Promise<LoginResponse> {
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
     // 先獲取 CSRF token（如果需要的話）
     const response = await apiClient.post<User>("/auth/login", credentials)
 
@@ -26,7 +26,7 @@ export const authService = {
   },
 
   // 註冊
-  async register(data: Omit<RegisterRequest, "csrf">) {
+  async register(data: RegisterRequest) {
     return apiClient.post("/auth/register", data)
   },
 
