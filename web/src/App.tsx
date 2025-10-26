@@ -12,7 +12,7 @@ function App() {
                 {/* 認證路由 */}
                 <Route path={routeConfigs.LOGIN} element={<LoginPage />} />
                 <Route path={routeConfigs.REGISTER} element={<RegisterPage />} />
-                <Route path="/forgot" element={<ForgotPasswordPage />} />
+                <Route path={routeConfigs.forget} element={<ForgotPasswordPage />} />
 
                 {/* 儀表板路由 */}
                 <Route path={routeConfigs.DASHBOARD} element={<HomePage />} />

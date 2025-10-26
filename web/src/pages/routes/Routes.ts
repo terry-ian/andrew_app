@@ -1,7 +1,8 @@
 const routeConfigs = {
     DASHBOARD: "/dashboard",
     LOGIN: "/login",
-    REGISTER: "/register"
+    REGISTER: "/register",
+    forget: "/forgot",
 }
 
 export default routeConfigs
