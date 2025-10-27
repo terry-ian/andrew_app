@@ -1,13 +1,21 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { authService } from "@/services/auth.ts"
 import { renderWithApp } from "@/test/TestUtils.tsx"
+import { dummyUser } from "@/test/DummyUser"
 
-vi.mock("@/services/auth", () => ({
-    authService: {
-        logout: vi.fn(),
-    },
+const mockLogout = vi.fn()
+
+// Mock useAuth hook
+vi.mock("@/hooks/useAuth", () => ({
+    useAuth: () => ({
+        user: dummyUser({ email: "test@example.com", full_name: "Test User" }),
+        isLoading: false,
+        isAuthenticated: true,
+        setUser: vi.fn(),
+        logout: mockLogout,
+        checkAuth: vi.fn(),
+    }),
 }))
 
 describe("HomePage", () => {
@@ -28,10 +36,7 @@ describe("HomePage", () => {
     it("should successfully logout and navigate to login page", async () => {
         const user = userEvent.setup()
 
-        vi.mocked(authService.logout).mockResolvedValueOnce({
-            success: true,
-            message: "登出成功",
-        })
+        mockLogout.mockResolvedValueOnce(undefined)
 
         renderWithApp({ initialRoute: "/dashboard" })
 
@@ -40,9 +45,9 @@ describe("HomePage", () => {
 
         await user.click(logoutButton)
 
-        // 驗證 authService.logout 被呼叫
+        // 驗證 logout 被呼叫
         await waitFor(() => {
-            expect(authService.logout).toHaveBeenCalledTimes(1)
+            expect(mockLogout).toHaveBeenCalledTimes(1)
         })
 
         // 驗證導向到登入頁
@@ -58,18 +63,16 @@ describe("HomePage", () => {
             .spyOn(console, "error")
             .mockImplementation(() => {})
 
-        vi.mocked(authService.logout).mockRejectedValueOnce(
-            new Error("Network error")
-        )
+        mockLogout.mockRejectedValueOnce(new Error("Network error"))
 
         renderWithApp({ initialRoute: "/dashboard" })
 
         const logoutButton = screen.getByRole("button", { name: /登出/i })
         await user.click(logoutButton)
 
-        // 驗證 authService.logout 被呼叫
+        // 驗證 logout 被呼叫
         await waitFor(() => {
-            expect(authService.logout).toHaveBeenCalledTimes(1)
+            expect(mockLogout).toHaveBeenCalledTimes(1)
         })
 
         // 驗證錯誤處理
@@ -95,14 +98,9 @@ describe("HomePage", () => {
         const user = userEvent.setup()
 
         // 模擬一個需要時間的登出操作
-        vi.mocked(authService.logout).mockImplementation(
+        mockLogout.mockImplementation(
             () =>
-                new Promise((resolve) =>
-                    setTimeout(
-                        () => resolve({ success: true, message: "登出成功" }),
-                        100
-                    )
-                )
+                new Promise((resolve) => setTimeout(() => resolve(undefined), 100))
         )
 
         renderWithApp({ initialRoute: "/dashboard" })

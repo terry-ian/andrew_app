@@ -6,6 +6,7 @@ import RegisterPage from "@/pages/auth/RegisterPage"
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage"
 import HomePage from "@/pages/dashboard/HomePage"
 import routeConfigs from "@/pages/routes/Routes.ts"
+import routes from "@/pages/routes/Routes.ts"
 import PrivateRoute from "@/components/auth/PrivateRoute"
 
 // 建立 QueryClient 實例
@@ -39,10 +40,10 @@ function App() {
                     />
 
                     {/* 預設重導向到登入頁 */}
-                    <Route path="/" element={<Navigate to="/login" replace />} />
+                    <Route path="/" element={<Navigate to={routes.LOGIN} replace />} />
 
                     {/* 404 頁面 */}
-                    <Route path="*" element={<Navigate to="/login" replace />} />
+                    <Route path="*" element={<Navigate to={routes.LOGIN} replace />} />
                 </Routes>
             </BrowserRouter>
             <ReactQueryDevtools initialIsOpen={false} />

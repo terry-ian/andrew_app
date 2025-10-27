@@ -1,9 +1,10 @@
+import * as React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { authService } from "@/services/auth"
-import * as React from "react"
 import routeConfigs from "@/pages/routes/Routes.ts"
+import routes from "@/pages/routes/Routes.ts"
 
 export default function RegisterPage() {
     const navigate = useNavigate()
@@ -155,7 +156,7 @@ export default function RegisterPage() {
                     <div className="text-center text-sm">
             <span className="text-gray-300">
               已有帳號？{" "}
-                <a href="/login" className="text-muted hover:underline">
+                <a href={routes.LOGIN} className="text-muted hover:underline">
                 登入
               </a>
             </span>

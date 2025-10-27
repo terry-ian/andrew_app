@@ -1,23 +1,25 @@
-import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { authService } from "@/services/auth"
+import { useMutation } from "@tanstack/react-query"
+import { useAuth } from "@/hooks/useAuth"
+import routeConfigs from "@/pages/routes/Routes.ts";
 
 export default function HomePage() {
     const navigate = useNavigate()
-    const [isLoggingOut, setIsLoggingOut] = useState(false)
+    const { logout } = useAuth()
 
-    const handleLogout = async () => {
-        try {
-            setIsLoggingOut(true)
-            await authService.logout()
-            // 登出成功後導向登入頁
-            navigate("/login")
-        } catch (error) {
+    const logoutMutation = useMutation({
+        mutationFn: logout,
+        onSuccess: () => {
+            navigate(routeConfigs.LOGIN)
+        },
+        onError: (error) => {
             console.error("登出失敗:", error)
             alert("登出失敗,請稍後再試")
-        } finally {
-            setIsLoggingOut(false)
-        }
+        },
+    })
+
+    const handleLogout = () => {
+        logoutMutation.mutate()
     }
 
     return (
@@ -53,10 +55,10 @@ export default function HomePage() {
                 <p className="mt-8 text-center">
                     <button
                         onClick={handleLogout}
-                        disabled={isLoggingOut}
+                        disabled={logoutMutation.isPending}
                         className="text-blue-600 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isLoggingOut ? "登出中..." : "登出"}
+                        {logoutMutation.isPending ? "登出中..." : "登出"}
                     </button>
                 </p>
             </div>
