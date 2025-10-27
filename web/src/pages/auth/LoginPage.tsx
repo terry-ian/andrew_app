@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useMutation } from "@tanstack/react-query"
 import { authService } from "@/services/auth"
 import * as React from "react";
 import routeConfigs from "@/pages/routes/Routes.ts";
@@ -8,27 +9,19 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
+
+  const loginMutation = useMutation({
+    mutationFn: authService.login,
+    onSuccess: (data) => {
+      if (data.success) {
+        navigate(routeConfigs.DASHBOARD)
+      }
+    },
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
-    setLoading(true)
-
-    try {
-      const response = await authService.login({ email, password })
-
-      if (response.success) {
-        navigate(routeConfigs.DASHBOARD)
-      } else {
-        setError(response.message || "登入失敗")
-      }
-    } catch (err) {
-      setError("發生錯誤，請稍後再試")
-    } finally {
-      setLoading(false)
-    }
+    loginMutation.mutate({ email, password })
   }
 
   return (
@@ -37,9 +30,17 @@ export default function LoginPage() {
         <h1 className="mb-2 text-2xl font-bold text-white">歡迎回來</h1>
         <p className="text-muted mb-6">請登入以進入後台系統</p>
 
-        {error && (
+        {loginMutation.isError && (
           <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">
-            {error}
+            {loginMutation.error instanceof Error
+              ? loginMutation.error.message
+              : "登入失敗，請稍後再試"}
+          </div>
+        )}
+
+        {loginMutation.data && !loginMutation.data.success && (
+          <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">
+            {loginMutation.data.message || "登入失敗"}
           </div>
         )}
 
@@ -83,10 +84,10 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loginMutation.isPending}
             className="w-full cursor-pointer rounded-md bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
           >
-            {loading ? "登入中..." : "登入"}
+            {loginMutation.isPending ? "登入中..." : "登入"}
           </button>
 
           <div className="flex justify-between text-sm">

@@ -40,10 +40,13 @@ describe("LoginPage", () => {
         await user.click(submitButton)
 
         await waitFor(() => {
-            expect(authService.login).toHaveBeenCalledWith({
-                email: "test@example.com",
-                password: "password123",
-            })
+            expect(authService.login).toHaveBeenCalledWith(
+                {
+                    email: "test@example.com",
+                    password: "password123",
+                },
+                expect.anything() // React Query 會傳遞額外的參數
+            )
         })
 
         await waitFor(() => {
