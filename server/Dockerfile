@@ -24,8 +24,9 @@ RUN docker-php-ext-install \
     bcmath \
     gd
 
-# 啟用 Apache mod_rewrite
-RUN a2enmod rewrite
+# 啟用 Apache mod_rewrite 和 PHP 配置
+RUN a2enmod rewrite && \
+    ln -sf /etc/apache2/mods-available/php.conf /etc/apache2/mods-enabled/php.conf
 
 # 設定 Apache DocumentRoot
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
