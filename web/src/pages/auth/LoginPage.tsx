@@ -13,7 +13,7 @@ export default function LoginPage() {
   const loginMutation = useMutation({
     mutationFn: authService.login,
     onSuccess: (data) => {
-      if (data.success) {
+      if (data.success && data.data) {
         navigate(routeConfigs.DASHBOARD)
       }
     },
@@ -32,7 +32,9 @@ export default function LoginPage() {
 
         {loginMutation.isError && (
           <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">
-              登入失敗，請稍後再試
+            {loginMutation.error instanceof Error
+              ? loginMutation.error.message
+              : "登入失敗，請稍後再試"}
           </div>
         )}
 

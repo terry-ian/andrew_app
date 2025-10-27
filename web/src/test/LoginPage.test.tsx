@@ -22,7 +22,7 @@ describe("LoginPage", () => {
 
         vi.mocked(authService.login).mockResolvedValueOnce({
             success: true,
-            user: dummyUser({
+            data: dummyUser({
                 id: 1,
                 email: "test@example.com",
                 full_name: "Test User",

@@ -1,28 +1,14 @@
 import apiClient from "./api"
 import type {
   LoginRequest,
-  LoginResponse,
   RegisterRequest,
   User,
 } from "@/types"
 
 export const authService = {
   // 登入
-  async login(credentials: LoginRequest): Promise<LoginResponse> {
-    // 先獲取 CSRF token（如果需要的話）
-    const response = await apiClient.post<User>("/auth/login", credentials)
-
-    if (response.success && response.data) {
-      return {
-        success: true,
-        user: response.data,
-      }
-    }
-
-    return {
-      success: false,
-      message: response.message || "登入失敗",
-    }
+  async login(credentials: LoginRequest) {
+    return apiClient.post("/auth/login", credentials)
   },
 
   // 註冊
