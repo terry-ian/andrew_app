@@ -61,7 +61,6 @@ function ForgetPasswordError() {
 }
 
 export default function ResetPasswordPage() {
-    const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const token = searchParams.get("token") || ""
 
@@ -104,12 +103,6 @@ export default function ResetPasswordPage() {
 
         setIsLoading(true)
 
-        // 模擬 API 請求
-        setTimeout(() => {
-            setIsLoading(false)
-            // 成功後重導向到登入頁面
-            navigate(`${routeConfigs.LOGIN}?reset=success`)
-        }, 1500)
     }
 
     // 如果沒有 token，顯示錯誤訊息

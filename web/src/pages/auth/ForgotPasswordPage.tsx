@@ -15,11 +15,7 @@ export default function ForgotPasswordPage() {
         setError("")
         setIsLoading(true)
 
-        // 模擬 API 請求
-        setTimeout(() => {
-            setIsLoading(false)
-            setIsSuccess(true)
-        }, 1500)
+
     }
 
     if (isSuccess) {
