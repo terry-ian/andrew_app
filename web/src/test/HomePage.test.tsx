@@ -3,6 +3,8 @@ import { screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { renderWithApp } from "@/test/TestUtils.tsx"
 import { dummyUser } from "@/test/DummyUser"
+import routeConfigs from "@/pages/routes/Routes.ts";
+import routes from "@/pages/routes/Routes.ts";
 
 const mockLogout = vi.fn()
 
@@ -24,7 +26,7 @@ describe("HomePage", () => {
     })
 
     it("should display homepage content", async () => {
-        renderWithApp({ initialRoute: "/dashboard" })
+        renderWithApp({ initialRoute: routeConfigs.DASHBOARD })
 
         expect(screen.getByText(/嗨,使用者!/i)).toBeInTheDocument()
         expect(screen.getByText(/錢包餘額/i)).toBeInTheDocument()
@@ -38,7 +40,7 @@ describe("HomePage", () => {
 
         mockLogout.mockResolvedValueOnce(undefined)
 
-        renderWithApp({ initialRoute: "/dashboard" })
+        renderWithApp({ initialRoute: routeConfigs.DASHBOARD })
 
         const logoutButton = screen.getByRole("button", { name: /登出/i })
         expect(logoutButton).toBeInTheDocument()
@@ -65,7 +67,7 @@ describe("HomePage", () => {
 
         mockLogout.mockRejectedValueOnce(new Error("Network error"))
 
-        renderWithApp({ initialRoute: "/dashboard" })
+        renderWithApp({ initialRoute: routes.DASHBOARD })
 
         const logoutButton = screen.getByRole("button", { name: /登出/i })
         await user.click(logoutButton)
@@ -103,7 +105,7 @@ describe("HomePage", () => {
                 new Promise((resolve) => setTimeout(() => resolve(undefined), 100))
         )
 
-        renderWithApp({ initialRoute: "/dashboard" })
+        renderWithApp({ initialRoute: routes.DASHBOARD })
 
         const logoutButton = screen.getByRole("button", { name: /登出/i })
         expect(logoutButton).not.toBeDisabled()

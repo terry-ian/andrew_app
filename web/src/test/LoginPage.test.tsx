@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event"
 import { authService } from "@/services/auth.ts"
 import { dummyUser } from "@/test/DummyUser.ts"
 import { renderWithApp } from "@/test/TestUtils.tsx"
+import routeConfigs from "@/pages/routes/Routes.ts";
 
 vi.mock("@/services/auth", () => ({
     authService: {
@@ -50,7 +51,7 @@ describe("LoginPage", () => {
         })
 
         await waitFor(() => {
-            expect(window.location.pathname).toBe("/dashboard")
+            expect(window.location.pathname).toBe(routeConfigs.DASHBOARD)
         })
     })
 })
