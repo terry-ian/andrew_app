@@ -1,14 +1,16 @@
+import * as React from "react"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { authService } from "@/services/auth"
-import * as React from "react";
 import routeConfigs from "@/pages/routes/Routes.ts";
 
 export default function LoginPage() {
   const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+    const resetSuccess = searchParams.get("reset") === "success"
 
   const loginMutation = useMutation({
     mutationFn: authService.login,
@@ -29,6 +31,12 @@ export default function LoginPage() {
       <div className="bg-login-form-wrapper w-full max-w-md rounded-2xl p-8">
         <h1 className="mb-2 text-2xl font-bold text-white">歡迎回來</h1>
         <p className="text-muted mb-6">請登入以進入後台系統</p>
+
+          {resetSuccess && (
+              <div className="mb-4 rounded bg-green-50 p-3 text-sm text-green-600">
+                  密碼重設成功！請使用新密碼登入。
+              </div>
+          )}
 
         {loginMutation.isError && (
           <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">

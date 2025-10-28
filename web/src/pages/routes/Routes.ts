@@ -3,6 +3,7 @@ const routeConfigs = {
     LOGIN: "/login",
     REGISTER: "/register",
     forget: "/forgot",
+    RESET: "/reset",
 }
 
 export default routeConfigs

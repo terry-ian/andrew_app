@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import LoginPage from "@/pages/auth/LoginPage"
 import RegisterPage from "@/pages/auth/RegisterPage"
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage"
+import ResetPasswordPage from "@/pages/auth/ResetPasswordPage"
 import HomePage from "@/pages/dashboard/HomePage"
 import routeConfigs from "@/pages/routes/Routes.ts"
 import routes from "@/pages/routes/Routes.ts"
@@ -28,6 +29,7 @@ function App() {
                     <Route path={routeConfigs.LOGIN} element={<LoginPage />} />
                     <Route path={routeConfigs.REGISTER} element={<RegisterPage />} />
                     <Route path={routeConfigs.forget} element={<ForgotPasswordPage />} />
+                    <Route path={routeConfigs.RESET} element={<ResetPasswordPage />} />
 
                     {/* 儀表板路由 */}
                     <Route
