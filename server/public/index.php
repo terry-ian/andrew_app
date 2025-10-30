@@ -11,7 +11,7 @@ require_once __DIR__ . '/../src/core/auth.php';
 require_once __DIR__ . '/../src/controllers/AuthController.php';
 require_once __DIR__ . '/../src/controllers/PasswordController.php';
 
-// 處理 CORS（必須在任何輸出之前）
+// 處理 CORS(必須在任何輸出之前)
 handle_cors();
 
 function render($view, $vars = []) { extract($vars); include __DIR__ . '/../src/views/' . $view . '.php'; }
@@ -19,17 +19,36 @@ function render($view, $vars = []) { extract($vars); include __DIR__ . '/../src/
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
-// API 路由（JSON 格式，無 CSRF 檢查）
-if (strpos($path, '/auth/') === 0 && $method === 'POST') {
+// API 路由(JSON 格式,無 CSRF 檢查)
+if (strpos($path, '/auth/') === 0) {
   $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
 
-  // 判斷是否為 JSON API 請求
-  if (strpos($contentType, 'application/json') !== false) {
-    if ($path === '/auth/register') { AuthController::apiRegister($pdo); exit; }
-    if ($path === '/auth/login') { AuthController::apiLogin($pdo); exit; }
-    if ($path === '/auth/logout') { AuthController::apiLogout($pdo); exit; }
-    if ($path === '/auth/request-reset') { PasswordController::apiRequestReset($pdo, $config); exit; }
-    if ($path === '/auth/perform-reset') { PasswordController::apiPerformReset($pdo); exit; }
+    // 判斷是否為 JSON API 請求 (POST 必須是 JSON, GET 直接允許)
+    if (strpos($contentType, 'application/json') !== false || $method === 'GET') {
+        if ($path === '/auth/register' && $method === 'POST') {
+            AuthController::apiRegister($pdo);
+            exit;
+        }
+        if ($path === '/auth/login' && $method === 'POST') {
+            AuthController::apiLogin($pdo);
+            exit;
+        }
+        if ($path === '/auth/logout' && $method === 'POST') {
+            AuthController::apiLogout($pdo);
+            exit;
+        }
+        if ($path === '/auth/user' && $method === 'GET') {
+            AuthController::apiGetCurrentUser($pdo);
+            exit;
+        }
+        if ($path === '/auth/request-reset' && $method === 'POST') {
+            PasswordController::apiRequestReset($pdo, $config);
+            exit;
+        }
+        if ($path === '/auth/perform-reset' && $method === 'POST') {
+            PasswordController::apiPerformReset($pdo);
+            exit;
+        }
   }
 }
 

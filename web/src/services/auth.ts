@@ -1,14 +1,10 @@
 import apiClient from "./api"
-import type {
-  LoginRequest,
-  RegisterRequest,
-  User,
-} from "@/types"
+import type { LoginRequest, RegisterRequest, User, } from "@/types"
 
 export const authService = {
   // 登入
   async login(credentials: LoginRequest) {
-    return apiClient.post("/auth/login", credentials)
+      return apiClient.post<User>("/auth/login", credentials)
   },
 
   // 註冊

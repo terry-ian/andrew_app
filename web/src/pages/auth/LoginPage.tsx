@@ -3,7 +3,8 @@ import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { authService } from "@/services/auth"
-import routeConfigs from "@/pages/routes/Routes.ts";
+import routeConfigs from "@/pages/routes/Routes.ts"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function LoginPage() {
     const navigate = useNavigate()
@@ -11,11 +12,13 @@ export default function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const resetSuccess = searchParams.get("reset") === "success"
+    const { setUser } = useAuth()
 
     const loginMutation = useMutation({
         mutationFn: authService.login,
         onSuccess: (data) => {
             if (data.success && data.data) {
+                setUser(data.data)
                 navigate(routeConfigs.DASHBOARD)
             }
         },
